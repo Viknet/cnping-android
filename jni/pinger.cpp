@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string>
 #include <jni.h>
 #include <stdlib.h>
@@ -83,10 +84,33 @@ extern "C" {
     addr.sun_family = AF_UNIX;
     strncpy(addr.sun_path, UDSOCK_NAME, sizeof(addr.sun_path)-1);
     bind(ufd, (struct sockaddr*)&addr, sizeof(addr));
+    //su --context u:r:system_app:s0 -c
+
+    FILE *se_file = fopen("/sys/fs/selinux/enforce", "r");
+    if (se_file){
+      char is_enforced = 0;
+      if (!fread(&is_enforced, 1, 1, se_file))
+        ERROR("Error reading \"/sys/fs/selinux/enforce\" file");
+      fclose(se_file);
+
+      if (is_enforced == '1'){
+        INFO("SELinux enforced. Patching policies.");
+        char buf[80];
+        FILE *fp = NULL;
+        if ((fp = popen("su -c 'supolicy --live \"allow untrusted_app init rawip_socket { read write }\"'", "r")) == NULL)
+          ERROR("Error launching supolicy!\n")
+        else {
+          while (fgets(buf, 80, fp) != NULL)
+            INFO("OUTPUT: %s", buf);
+          pclose(fp);
+        }
+      } else
+        INFO("SELinux is not enforced.");
+    } else
+      INFO("SELinux not found");
 
     int retval = system("su -c /data/data/com.viknet.cnping/lib/libhelper.so");
-
-    INFO("Retval: %d", retval);
+    INFO("Helper exit: %d", retval);
 
     if (retval != 0){
       ERROR("Helper failed.");

@@ -15,6 +15,9 @@ app: ndk move_helper apk
 install:
 	adb -d install -r bin/MainActivity-debug.apk
 
+install_emu:
+	adb -e install -r bin/MainActivity-debug.apk
+
 uninstall:
 	adb uninstall com.viknet.cnping
 
