@@ -4,6 +4,8 @@ include $(CLEAR_VARS)
 LOCAL_LDLIBS := -llog
 LOCAL_MODULE := helper
 LOCAL_SRC_FILES := helper.c
+LOCAL_CFLAGS += -fPIE
+LOCAL_LDFLAGS += -fPIE -pie
 include $(BUILD_EXECUTABLE)
 
 # include $(CLEAR_VARS)
