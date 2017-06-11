@@ -29,7 +29,6 @@ public class PingImageView extends View {
     }
 
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-    	//FIXME changing size not working somehow
     	super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	    final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
 	    final int newWidth= MeasureSpec.getSize(widthMeasureSpec);

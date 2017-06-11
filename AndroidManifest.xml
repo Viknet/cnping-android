@@ -11,6 +11,7 @@
         android:allowBackup="true" >
         <activity
             android:name="com.viknet.cnping.MainActivity"
+            android:configChanges="orientation|screenSize"
             android:label="com.viknet.cnping" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

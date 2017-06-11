@@ -8,7 +8,7 @@ If you are android developer and have some time, I would be glad to hear some wo
 
 ## TODO
 - [ ] UI fool proofing
-- [ ] View resize support (including orientation change)
+- [x] View resize support (including orientation change)
 - [ ] Parameters (packet size, ping period)
 - [ ] Performance fixes
 - [ ] Testing on different devices

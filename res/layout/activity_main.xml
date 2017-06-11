@@ -15,6 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight = "0"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal">
 
         <EditText
@@ -23,21 +25,14 @@
             android:layout_height="wrap_content"
             android:layout_weight = "1"
             android:singleLine="true"
-            android:autoText="false"
             android:typeface="monospace"
+            android:imeOptions="actionDone"
             android:text="google.com"/>
 
         <Button
             android:id="@+id/goButton"
             android:text="GO"
-            android:layout_width="10mm"
-            android:layout_height="wrap_content"
-            android:layout_weight = "0"/>
-
-        <Button
-            android:id="@+id/stopButton"
-            android:text="Stop"
-            android:layout_width="10mm"
+            android:layout_width="15mm"
             android:layout_height="wrap_content"
             android:layout_weight = "0"/>
     </LinearLayout>
