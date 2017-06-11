@@ -72,20 +72,18 @@ int main(int argc, char const *argv[])
     connect(ufd, (struct sockaddr*)&addr, sizeof(addr));
 
     const uint8_t val = 255;
-    struct timeval tv;
-    tv.tv_sec = 1;
 
     int sd = socket(PF_INET, SOCK_RAW, ICMP_PROTO_NUMBER);
     if (sd < 0){
-        ERROR("Socket creation error : %d\n",errno);
+        ERROR("Socket creation error: %d",errno);
         exit(-1);
     }
     if (setsockopt(sd, SOL_IP, IP_TTL, &val, sizeof(val)) != 0){
-        ERROR("Set TTL failed\n");
+        ERROR("Set TTL failed: %d", errno);
         exit(-1);
     }
     if (fcntl(sd, F_SETFL, O_NONBLOCK) != 0){
-        ERROR("Set O_NONBLOCK failed\n");
+        ERROR("Set O_NONBLOCK failed: %d", errno);
         exit(-1);
     }
     if (!send_sd(ufd, sd)){
@@ -95,17 +93,19 @@ int main(int argc, char const *argv[])
 
     sd = socket(PF_INET, SOCK_RAW, ICMP_PROTO_NUMBER);
     if (sd < 0){
-        ERROR("Socket creation error : %d\n",errno);
+        ERROR("Socket creation error: %d", errno);
         exit(-1);
     }
     if (setsockopt(sd, SOL_IP, IP_TTL, &val, sizeof(val)) != 0){
-        ERROR("Set TTL failed\n");
+        ERROR("Set TTL failed: %d", errno);
         exit(-1);
     }
-    if (setsockopt (sd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < 0){
-        ERROR("Set timeout failed\n");
+
+    if (fcntl(sd, F_SETFL, O_NONBLOCK) != 0){
+        ERROR("Set O_NONBLOCK failed: %d", errno);
         exit(-1);
     }
+
     if (!send_sd(ufd, sd)){
         ERROR("Listen socket send error: %d", errno);
         exit(-1);

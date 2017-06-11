@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "os_generic.h"
 #include "CNFGDriver.h"
@@ -119,12 +120,28 @@ extern "C" {
     uint8_t buffer[8192];
     struct sockaddr_in received_address;
     ssize_t headers_size = sizeof(ip_header) + sizeof(icmp_header);
+    struct timeval tv;
+    fd_set readset;
 
     memset(&buffer, 0, sizeof(buffer));
     while (is_running){
+      FD_ZERO(&readset);
+      FD_SET(listen_socket, &readset);
+      tv.tv_sec = 0;
+      tv.tv_usec = 500000;
+      int result = select(listen_socket + 1, &readset, NULL, NULL, &tv);
+      if (result == 0) continue;
+      if (result == -1){
+        ERROR("Select error: %d", errno);
+        continue;
+      }
+
       socklen_t address_length = sizeof(received_address);
       ssize_t received = recvfrom(listen_socket, buffer, sizeof(buffer), 0, (struct sockaddr*)&received_address, &address_length);
-      if (received == -1) continue;
+      if (received == -1){
+        ERROR("Recvfrom error: %d", errno);
+        continue;
+      }
       if (received < headers_size) continue;
       if (received_address.sin_addr.s_addr != ping_address.sin_addr.s_addr) continue;
       if (((ip_header *)buffer)->protocol != 1) continue;
