@@ -14,7 +14,7 @@
 #include "CNFGFunctions.h"
 
 #define PATTERN_SIZE 8
-#define PINGCYCLEWIDTH 2048
+#define PINGCYCLEWIDTH 4096
 
 uint8_t pattern[PATTERN_SIZE];
 double PingSendTimes[PINGCYCLEWIDTH];

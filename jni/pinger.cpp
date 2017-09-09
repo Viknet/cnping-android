@@ -97,13 +97,20 @@ extern "C" {
         INFO("SELinux enforced. Patching policies.");
         char buf[80];
         FILE *fp = NULL;
-        if ((fp = popen("su -c 'supolicy --live \"allow untrusted_app init rawip_socket { read write }\"'", "r")) == NULL)
+        if ((fp = popen("su -c 'supolicy --live \"allow untrusted_app { init supersu } rawip_socket { read write }\"'", "r")) == NULL)
           ERROR("Error launching supolicy!\n")
         else {
           while (fgets(buf, 80, fp) != NULL)
             INFO("OUTPUT: %s", buf);
           pclose(fp);
         }
+        // if ((fp = popen("su -c 'supolicy --live \"allow untrusted_app supersu rawip_socket { read write }\"'", "r")) == NULL)
+        //   ERROR("Error launching supolicy!\n")
+        // else {
+        //   while (fgets(buf, 80, fp) != NULL)
+        //     INFO("OUTPUT: %s", buf);
+        //   pclose(fp);
+        // }
       } else
         INFO("SELinux is not enforced.");
     } else
