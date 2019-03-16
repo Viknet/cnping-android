@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <string.h>
 
 #include "os_generic.h"
 #include "CNFGDriver.h"
